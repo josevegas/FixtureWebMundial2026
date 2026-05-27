@@ -1,11 +1,11 @@
-import React from 'react';
+import React,{useMemo} from 'react';
 import { useMatches } from '../hooks/useMatches';
 import { MatchCard } from './MatchCard';
 import type { StageType } from '../../../types';
 
 export const MatchList: React.FC = () => {
   const {
-    filteredMatches,
+    filteredMatches: rawFilteredMatches, // Supongamos que viene del hook,
     selectedStage,
     setSelectedStage,
     selectedGroup,
@@ -26,7 +26,14 @@ export const MatchList: React.FC = () => {
     { value: 'final', label: 'Final' },
   ];
 
-  const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+  const groups = useMemo(()=>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],[]);
+
+  // Memorizar la renderización de la grilla para evitar recálculos visuales agresivos
+  const renderedMatches = useMemo(() => {
+    return rawFilteredMatches.map(match => (
+      <MatchCard key={match.id} match={match} />
+    ));
+  }, [rawFilteredMatches]);
 
   return (
     <div className="matches-section-container">
@@ -108,11 +115,9 @@ export const MatchList: React.FC = () => {
       </div>
 
       {/* Match Grid */}
-      {filteredMatches.length > 0 ? (
+      {rawFilteredMatches.length > 0 ? (
         <div className="matches-grid">
-          {filteredMatches.map(match => (
-            <MatchCard key={match.id} match={match} />
-          ))}
+          {renderedMatches}
         </div>
       ) : (
         <div className="empty-matches-state">

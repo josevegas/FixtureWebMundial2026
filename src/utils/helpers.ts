@@ -1,32 +1,23 @@
-import type { Team, Match, Group } from '../types';
+import { type Team, type Match, type Group } from '../types/index';
 
 export const getFlagUrl = (teamId: string): string => {
-  const mapping: Record<string, string> = {
-    USA: 'us', SUI: 'ch', CMR: 'cm', JAM: 'jm',
-    MEX: 'mx', ECU: 'ec', POL: 'pl', NZL: 'nz',
-    CAN: 'ca', DEN: 'dk', EGY: 'eg', IRQ: 'iq',
-    ARG: 'ar', SWE: 'se', NGA: 'ng', PAN: 'pa',
-    FRA: 'fr', COL: 'co', RSA: 'za', UZB: 'uz',
-    BRA: 'br', TUR: 'tr', GHA: 'gh', HON: 'hn',
-    ENG: 'gb-eng', URU: 'uy', TUN: 'tn', KOR: 'kr',
-    BEL: 'be', CRO: 'hr', ALG: 'dz', AUS: 'au',
-    POR: 'pt', CHI: 'cl', MLI: 'ml', KSA: 'sa',
-    ESP: 'es', SEN: 'sn', CRC: 'cr', IRN: 'ir',
-    ITA: 'it', PER: 'pe', CIV: 'ci', JPN: 'jp',
-    GER: 'de', NED: 'nl', MAR: 'ma', UKR: 'ua'
-  };
-  const code = mapping[teamId.toUpperCase()] || 'us';
-  return `https://flagcdn.com/w40/${code}.png`;
+  return `https://api.fifa.com/api/v3/picture/flags-sq-4/${teamId}`;
 };
 
-// Format date into standard readable format
-export const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr + 'T00:00:00');
-  return date.toLocaleDateString('es-ES', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-  });
+// Format date and time into readable format (e.g., "11 jun 16:00")
+export const formatDate = (dateTimeStr: string): string => {
+  const date = new Date(dateTimeStr);
+  
+  // Extract date components
+  const dayOfWeek = date.toLocaleDateString('es-ES', { weekday: 'short' });
+  const day = date.getDate();
+  const month = date.toLocaleDateString('es-ES', { month: 'short' });
+  
+  // Extract time components
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+  return `${dayOfWeek}, ${day} ${month} ${hours}:${minutes}`;
 };
 
 // Calculate standings for teams based on matches

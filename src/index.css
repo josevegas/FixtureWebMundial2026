@@ -1,15 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
+/* ==========================================================================
+   PALETA DE COLORES E IDENTIDAD - MUNDIAL 2026
+   ========================================================================== */
+
 :root {
   --font-headers: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  /* Identidad de Marca Invariable (Brand DNA) */
+  --brand-purple: #5e17eb;
+  --brand-us-blue: #2563eb;
+  --brand-ca-red: #dc2626;
+  --brand-mx-teal: #0d9488;
+  --brand-gold: #ffd700;
+  --brand-gold-dark: #ca8a04;
+
+  /* Gradientes de Marca */
+  --grad-host-nations: linear-gradient(135deg, var(--brand-purple) 0%, #ff007f 50%, #00f2fe 100%);
+  --grad-gold: linear-gradient(135deg, #fef08a 0%, var(--brand-gold) 50%, var(--brand-gold-dark) 100%);
+  --grad-active-tab: linear-gradient(90deg, var(--brand-purple) 0%, #ff007f 100%);
+  --grad-card: linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%);
 
   /* Premium Dark Color Palette (Official FIFA WC 2026 inspired) */
   --bg-main: #0a061b;
   --bg-card: rgba(22, 17, 43, 0.65);
   --bg-card-hover: rgba(30, 24, 59, 0.85);
+  --bg-control: rgba(15, 23, 42, 0.8);
+  --bg-panel: rgba(16, 20, 38, 0.4);
+  /* Estados e Interacciones en Oscuro */
   --border-glass: rgba(255, 255, 255, 0.07);
-  --border-glass-focus: rgba(94, 23, 235, 0.4);
+  --border-glass-focus: rgba(94, 23, 235, 0.5);
+  --grad-card: linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%);
 
   /* Colors & Brand Gradients */
   --color-primary: #5e17eb;
@@ -22,11 +44,37 @@
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
 
-  /* Gradients */
-  --grad-host-nations: linear-gradient(135deg, #5e17eb 0%, #ff007f 50%, #00f2fe 100%);
-  --grad-gold: linear-gradient(135deg, #fef08a 0%, #ffd700 50%, #ca8a04 100%);
-  --grad-card: linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%);
+  /* Efecto de Luces de Estadio traseras */
+  --glow-1: rgba(255, 0, 127, 0.12);
+  --glow-2: rgba(0, 242, 254, 0.1);
+  --glow-3: rgba(94, 23, 235, 0.08);
+  --glow-4: rgba(0, 255, 163, 0.04);
+
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+  --bg-main: #f5f3ff; /* Soft pastel violet-grey base */
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-control: #ffffff;
+  --bg-panel: rgba(255, 255, 255, 0.9);
+  /* Estados e Interacciones en Claro */
+  --border-glass: rgba(94, 23, 235, 0.1);
+  --border-glass-focus: rgba(255, 0, 127, 0.4);
+  --grad-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 246, 252, 0.9) 100%);
   --grad-active-tab: linear-gradient(90deg, #5e17eb 0%, #ff007f 100%);
+  /* Textos en Claro */
+  --text-primary: #0a061b;
+  --text-secondary: #4a4368;
+  --text-muted: #7c759c;
+  
+  /* Destellos sutiles para el fondo claro */
+  --glow-1: rgba(255, 0, 127, 0.04);
+  --glow-2: rgba(0, 242, 254, 0.04);
+  --glow-3: rgba(94, 23, 235, 0.05);
+  --glow-4: rgba(0, 255, 163, 0.02);
+
 }
 
 * {
@@ -43,11 +91,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   overflow-x: hidden;
+  /*transition: background-color 0.4s ease, color 0.4s ease;
+  /* Render dinámico de las luces del estadio usando las variables de modo */
   background-image: 
-    radial-gradient(circle at 15% 20%, rgba(255, 0, 127, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 50% 15%, rgba(94, 23, 235, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 25%, rgba(0, 255, 163, 0.04) 0%, transparent 40%);
+    radial-gradient(circle at 15% 20%, var(--glow-1) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, var(--glow-2) 0%, transparent 45%),
+    radial-gradient(circle at 50% 15%, var(--glow-3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 25%, var(--glow-4) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
@@ -114,7 +164,7 @@ h1, h2, h3, h4, h5, h6 {
 .app-title {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(to right, #f8fafc, #cbd5e1, #94a3b8);
+  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 6px;
@@ -370,11 +420,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .search-input-field {
   width: 100%;
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--bg-control);
   border: 1px solid var(--border-glass);
   border-radius: 8px;
   padding: 12px 40px 12px 16px;
-  color: white;
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 0.95rem;
   transition: all 0.2s ease;
@@ -382,8 +432,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .search-input-field:focus {
   outline: none;
-  border-color: var(--color-accent-us);
-  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 10px var(--border-glass-focus);
 }
 
 .clear-search-btn {
@@ -446,10 +496,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .group-select-dropdown {
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--bg-control);
   border: 1px solid var(--border-glass);
   border-radius: 8px;
-  color: white;
+  color: var(--text-primary);
   padding: 8px 16px;
   outline: none;
   font-family: var(--font-body);
@@ -464,7 +514,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Matches Grid */
 .matches-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 20px;
 }
 
@@ -510,35 +560,49 @@ h1, h2, h3, h4, h5, h6 {
 
 .match-teams-container {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
   flex-grow: 1;
+  width: 100%;
 }
 
-.match-team-row {
+.match-team-block, .match-team-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 8px 12px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid transparent;
   transition: all 0.2s ease;
+  flex: 1;
 }
 
-.match-team-row.match-winner {
+.match-team-block.home-block {
+  justify-content: flex-end;
+}
+
+.match-team-block.away-block {
+  justify-content: flex-start;
+}
+
+.match-team-block.match-winner {
   border-color: rgba(16, 185, 129, 0.2);
   background: rgba(16, 185, 129, 0.05);
 }
 
-.match-team-row.match-winner .team-name-text {
+.match-team-block.match-winner .team-name-text {
   color: white;
   font-weight: 600;
 }
 
 .team-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 12px;
 }
 
@@ -555,10 +619,10 @@ h1, h2, h3, h4, h5, h6 {
 .score-input {
   width: 44px;
   height: 36px;
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--bg-control);
   border: 1px solid var(--border-glass);
   border-radius: 6px;
-  color: white;
+  color: var(--text-primary);
   text-align: center;
   font-family: var(--font-headers);
   font-weight: 700;
@@ -576,23 +640,19 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0, 0, 0, 0.2);
 }
 
-.match-vs-divider {
+.match-vs-divider-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin: -4px 0;
-}
-
-.match-vs-divider::before, .match-vs-divider::after {
-  content: '';
-  flex-grow: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.04);
-  margin: 0 10px;
+  font-family: var(--font-headers);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  background: var(--grad-host-nations);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 4px;
 }
 
 .match-card-footer {
@@ -715,8 +775,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .groups-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
+
+@media (max-width: 1400px) {
+  .groups-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .groups-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .group-card {
@@ -737,22 +809,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .table-responsive {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 .group-table, .thirds-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .group-table th, .thirds-table th {
   color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.05em;
-  padding: 8px 6px;
+  padding: 6px 4px;
   border-bottom: 1px solid var(--border-glass);
   text-align: center;
 }
@@ -767,7 +839,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .group-table td, .thirds-table td {
-  padding: 10px 6px;
+  padding: 8px 4px;
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
@@ -1035,10 +1107,10 @@ h1, h2, h3, h4, h5, h6 {
 .node-score-input {
   width: 28px;
   height: 22px;
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--bg-control);
   border: 1px solid var(--border-glass);
   border-radius: 4px;
-  color: white;
+  color: var(--text-primary);
   text-align: center;
   font-size: 0.8rem;
   font-weight: 700;
@@ -1197,27 +1269,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Light Mode Overrides */
-body.light-mode {
-  --bg-main: #f5f3ff; /* Soft pastel violet-grey base */
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 0.95);
-  --border-glass: rgba(94, 23, 235, 0.08);
-  --border-glass-focus: rgba(94, 23, 235, 0.5);
-  --text-primary: #0a061b;
-  --text-secondary: #4a4368;
-  --text-muted: #7c759c;
-  
-  --grad-card: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 246, 252, 0.9) 100%);
-  --grad-active-tab: linear-gradient(90deg, #5e17eb 0%, #ff007f 100%);
-
-  background-image: 
-    radial-gradient(circle at 15% 20%, rgba(255, 0, 127, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(0, 242, 254, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 50% 15%, rgba(94, 23, 235, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 25%, rgba(0, 255, 163, 0.02) 0%, transparent 40%);
-}
-
 body.light-mode .stat-box {
   background: rgba(255, 255, 255, 0.9);
   border-color: rgba(94, 23, 235, 0.08);
@@ -1264,8 +1315,8 @@ body.light-mode .score-input {
 }
 
 body.light-mode .score-input:focus:not(:disabled) {
-  border-color: #5e17eb;
-  box-shadow: 0 0 5px rgba(94, 23, 235, 0.2);
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 10px var(--border-glass-focus);
 }
 
 body.light-mode .node-score-input {
@@ -1275,7 +1326,8 @@ body.light-mode .node-score-input {
 }
 
 body.light-mode .node-score-input:focus:not(:disabled) {
-  border-color: #5e17eb;
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 10px var(--border-glass-focus);
 }
 
 body.light-mode .navbar-tabs {
@@ -1385,8 +1437,8 @@ body.light-mode .ui-btn-secondary:not(:disabled):hover {
 
 /* Flag Images Styles */
 .team-flag-img {
-  width: 22px;
-  height: 15px;
+  width: 50px;
+  height: 33px;
   object-fit: cover;
   border-radius: 2px;
   margin-right: 8px;
@@ -1396,8 +1448,8 @@ body.light-mode .ui-btn-secondary:not(:disabled):hover {
 }
 
 .team-flag-large-img {
-  width: 32px;
-  height: 22px;
+  width: 50px;
+  height: 33px;
   object-fit: cover;
   border-radius: 3px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);

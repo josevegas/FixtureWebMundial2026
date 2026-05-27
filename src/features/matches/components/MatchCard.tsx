@@ -1,8 +1,8 @@
 import React from 'react';
-import type { Match } from '../../../types';
+import type { Match} from '../../../types';
 import { useFixture } from '../../../context/FixtureContext';
 import { Card } from '../../../components/Card';
-import { formatDate, getFlagUrl } from '../../../utils/helpers';
+import { getFlagUrl, formatDate } from '../../../utils/helpers';
 
 interface MatchCardProps {
   match: Match;
@@ -13,76 +13,28 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
   const handleHomeScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    const score = val === '' ? null : Math.max(0, parseInt(val, 10));
-    updateMatchScore(
-      match.id,
-      score,
-      match.awayScore,
-      match.homePenaltyScore,
-      match.awayPenaltyScore,
-      match.winnerId
-    );
+    const homeScore = val === '' ? null : Math.max(0, parseInt(val, 10));
+    updateMatchScore(match.id, homeScore, match.awayScore, match.homePenaltyScore, match.awayPenaltyScore, match.winnerId);
   };
 
   const handleAwayScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    const score = val === '' ? null : Math.max(0, parseInt(val, 10));
-    updateMatchScore(
-      match.id,
-      match.homeScore,
-      score,
-      match.homePenaltyScore,
-      match.awayPenaltyScore,
-      match.winnerId
-    );
+    const awayScore = val === '' ? null : Math.max(0, parseInt(val, 10));
+    updateMatchScore(match.id, match.homeScore, awayScore, match.homePenaltyScore, match.awayPenaltyScore, match.winnerId);
   };
 
-  const handleHomePenaltyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHomePenaltyScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    const penalty = val === '' ? null : Math.max(0, parseInt(val, 10));
-    updateMatchScore(
-      match.id,
-      match.homeScore,
-      match.awayScore,
-      penalty,
-      match.awayPenaltyScore,
-      match.winnerId
-    );
+    const homePenaltyScore = val === '' ? null : Math.max(0, parseInt(val, 10));
+    updateMatchScore(match.id, match.homeScore, match.awayScore, homePenaltyScore, match.awayPenaltyScore, match.winnerId);
   };
 
-  const handleAwayPenaltyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAwayPenaltyScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    const penalty = val === '' ? null : Math.max(0, parseInt(val, 10));
-    updateMatchScore(
-      match.id,
-      match.homeScore,
-      match.awayScore,
-      match.homePenaltyScore,
-      penalty,
-      match.winnerId
-    );
+    const awayPenaltyScore = val === '' ? null : Math.max(0, parseInt(val, 10));
+    updateMatchScore(match.id, match.homeScore, match.awayScore, match.homePenaltyScore, awayPenaltyScore, match.winnerId);
   };
 
-  const selectWinner = (teamId: string) => {
-    updateMatchScore(
-      match.id,
-      match.homeScore,
-      match.awayScore,
-      match.homePenaltyScore,
-      match.awayPenaltyScore,
-      teamId
-    );
-  };
-
-  const isTied =
-    match.isCompleted &&
-    match.homeScore !== null &&
-    match.awayScore !== null &&
-    match.homeScore === match.awayScore;
-
-  const isKnockout = match.stage !== 'group';
-
-  // Format stage label
   const getStageLabel = () => {
     if (match.stage === 'group') return `Grupo ${match.group}`;
     switch (match.stage) {
@@ -109,18 +61,17 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         <span className="match-stage-badge">{getStageLabel()}</span>
         <span className="match-id">{match.id}</span>
       </div>
-
       <div className="match-teams-container">
         {/* Home Team */}
-        <div className={`match-team-row ${match.winnerId === match.homeTeam?.id && match.winnerId !== null ? 'match-winner' : ''}`}>
+        <div className={`match-team-block${match.winnerId === match.homeTeam?.id && match.winnerId !== null ? 'match-winner' : ''}`}>
           <div className="team-info">
-            {match.homeTeam ? (
-              <img className="team-flag-large-img" src={getFlagUrl(match.homeTeam.id)} alt={match.homeTeam.name} />
-            ) : (
+            {match.homeTeam?(
+              <img className="team-flag-large-img" src={getFlagUrl(match.homeTeam.flag)} alt={`${match.homeTeam.name} flag`} />
+            ):(
               <span className="team-flag-large-placeholder">❓</span>
             )}
             <span className="team-name-text">
-              {match.homeTeam ? match.homeTeam.name : match.homeTeamPlaceholder || 'Por definir'}
+              {match.homeTeam ? match.homeTeam.name : match.homeTeamPlaceholder}
             </span>
           </div>
           <input
@@ -129,89 +80,42 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             className="score-input"
             placeholder="-"
             disabled={!match.homeTeam || !match.awayTeam}
-            value={match.homeScore !== null ? match.homeScore : ''}
+            value={match.homeScore != null ? match.homeScore: ''}
             onChange={handleHomeScoreChange}
           />
         </div>
-
-        {/* Separator / VS */}
-        <div className="match-vs-divider">
-          <span>VS</span>
-        </div>
-
+        {/*Separador*/}
+        <div className="match-vs-divider-row"><span>VS</span></div>
         {/* Away Team */}
-        <div className={`match-team-row ${match.winnerId === match.awayTeam?.id && match.winnerId !== null ? 'match-winner' : ''}`}>
-          <div className="team-info">
-            {match.awayTeam ? (
-              <img className="team-flag-large-img" src={getFlagUrl(match.awayTeam.id)} alt={match.awayTeam.name} />
-            ) : (
-              <span className="team-flag-large-placeholder">❓</span>
-            )}
-            <span className="team-name-text">
-              {match.awayTeam ? match.awayTeam.name : match.awayTeamPlaceholder || 'Por definir'}
-            </span>
-          </div>
+        <div className={`match-team-block away-block ${match.winnerId === match.awayTeam?.id && match.winnerId !== null ? 'match-winner' : ''}`}>
           <input
             type="number"
             min="0"
             className="score-input"
             placeholder="-"
             disabled={!match.homeTeam || !match.awayTeam}
-            value={match.awayScore !== null ? match.awayScore : ''}
+            value={match.awayScore != null ? match.awayScore : ''}
             onChange={handleAwayScoreChange}
           />
+          <div className="team-info">
+            {match.awayTeam?(
+              <img className="team-flag-large-img" src={getFlagUrl(match.awayTeam.flag)} alt={`${match.awayTeam.name} flag`} />
+            ):(
+              <span className="team-flag-large-placeholder">❓</span>
+            )}
+            <span className="team-name-text">
+              {match.awayTeam ? match.awayTeam.name : match.awayTeamPlaceholder}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Penalty shootout section for knockouts */}
-      {isKnockout && isTied && match.homeTeam && match.awayTeam && (
-        <div className="penalty-shootout-section">
-          <span className="penalty-title">Tanda de Penaltis</span>
-          <div className="penalty-inputs">
-            <input
-              type="number"
-              min="0"
-              className="penalty-input"
-              placeholder="Pk"
-              value={match.homePenaltyScore !== null ? match.homePenaltyScore : ''}
-              onChange={handleHomePenaltyChange}
-            />
-            <span className="penalty-dash">-</span>
-            <input
-              type="number"
-              min="0"
-              className="penalty-input"
-              placeholder="Pk"
-              value={match.awayPenaltyScore !== null ? match.awayPenaltyScore : ''}
-              onChange={handleAwayPenaltyChange}
-            />
-          </div>
-          {match.homePenaltyScore === match.awayPenaltyScore && (
-            <div className="manual-winner-select">
-              <span className="winner-select-label">Selecciona ganador:</span>
-              <div className="winner-buttons">
-                <button
-                  type="button"
-                  className={`btn-winner-pick ${match.winnerId === match.homeTeam.id ? 'active' : ''}`}
-                  onClick={() => selectWinner(match.homeTeam!.id)}
-                >
-                  {match.homeTeam.name}
-                </button>
-                <button
-                  type="button"
-                  className={`btn-winner-pick ${match.winnerId === match.awayTeam.id ? 'active' : ''}`}
-                  onClick={() => selectWinner(match.awayTeam!.id)}
-                >
-                  {match.awayTeam.name}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Penalty Inputs (only show if match is completed and it's a knockout stage) */}
 
-      <div className="match-card-footer">
+      {/*Estadios y fecha*/}
+      <div className="march-card-footer">
         <span className="match-stadium">{match.stadium}</span>
+        <br />
         <span className="match-date">{formatDate(match.date)}</span>
       </div>
     </Card>

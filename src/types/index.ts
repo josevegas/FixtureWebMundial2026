@@ -44,3 +44,9 @@ export interface Group {
   id: string; // 'A' to 'L'
   teams: Team[];
 }
+
+export interface Stadium {
+  id: string;
+  name: string;
+  country: string;
+}

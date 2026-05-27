@@ -1,37 +1,45 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { useFixture } from '../../../context/FixtureContext';
 import { GroupTable } from './GroupTable';
 import { Card } from '../../../components/Card';
 import { getFlagUrl } from '../../../utils/helpers';
+import type { Team } from '../../../types';
+
+// Definimos la extensión de tipos correcta para los terceros lugares
+interface ThirdPlacedTeam extends Team {
+  group: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalDifference: number;
+  goalsFor: number;
+}
 
 export const GroupGrid: React.FC = () => {
   const { groups } = useFixture();
 
-  // Find all third-placed teams across the 12 groups
-  const getAllThirdPlacedTeams = () => {
-    const thirds = groups.map(g => {
-      if (g.teams.length >= 3) {
-        return g.teams[2];
+  // Envolvemos el cálculo pesado en un useMemo con tipado estricto
+  const thirdPlacedStandings = useMemo<ThirdPlacedTeam[]>(()=> {
+    const thirds: ThirdPlacedTeam[] = [];
+    groups.forEach(g=>{
+      if(g.teams && g.teams.length>=3){
+        thirds.push({
+          ...g.teams[2],
+          group: g.id // Guardamos a qué grupo pertenece originalmente
+        } as ThirdPlacedTeam);
       }
-      return null;
-    }).filter(Boolean);
-
-    // Sort by points, gd, gf, name
-    return (thirds as any[]).sort((a, b) => {
-      if (b.points !== a.points) {
-        return b.points - a.points;
-      }
-      if (b.goalDifference !== a.goalDifference) {
-        return b.goalDifference - a.goalDifference;
-      }
-      if (b.goalsFor !== a.goalsFor) {
-        return b.goalsFor - a.goalsFor;
-      }
+    });
+    // Criterios de desempate oficiales de la FIFA unificados
+    return thirds.sort((a,b)=>{
+      if (b.points !== a.points) return b.points - a.points;
+      if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+      if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
       return a.name.localeCompare(b.name);
     });
-  };
+  },[groups]);
 
-  const thirdPlacedStandings = getAllThirdPlacedTeams();
+  //const thirdPlacedStandings = getAllThirdPlacedTeams();
 
   return (
     <div className="groups-container">
