@@ -3,9 +3,20 @@ import { useMatches } from '../hooks/useMatches';
 import { MatchCard } from './MatchCard';
 import type { StageType } from '../../../types';
 
+const STAGES: { value: StageType | 'all'; label: string }[] = [
+  { value: 'all', label: 'Todos' },
+  { value: 'group', label: 'Fase de Grupos' },
+  { value: 'round_32', label: 'Ronda de 32' },
+  { value: 'round_16', label: 'Octavos' },
+  { value: 'quarter', label: 'Cuartos' },
+  { value: 'semi', label: 'Semifinales' },
+  { value: 'third_place', label: '3er Lugar' },
+  { value: 'final', label: 'Final' },
+];
+
 export const MatchList: React.FC = () => {
   const {
-    filteredMatches: rawFilteredMatches, // Supongamos que viene del hook,
+    filteredMatches: rawFilteredMatches,
     selectedStage,
     setSelectedStage,
     selectedGroup,
@@ -13,18 +24,10 @@ export const MatchList: React.FC = () => {
     searchQuery,
     setSearchQuery,
     stats,
+    isLoading,
+    error,
   } = useMatches();
 
-  const stages: { value: StageType | 'all'; label: string }[] = [
-    { value: 'all', label: 'Todos' },
-    { value: 'group', label: 'Fase de Grupos' },
-    { value: 'round_32', label: 'Ronda de 32' },
-    { value: 'round_16', label: 'Octavos' },
-    { value: 'quarter', label: 'Cuartos' },
-    { value: 'semi', label: 'Semifinales' },
-    { value: 'third_place', label: '3er Lugar' },
-    { value: 'final', label: 'Final' },
-  ];
 
   const groups = useMemo(()=>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],[]);
 
@@ -37,6 +40,34 @@ export const MatchList: React.FC = () => {
 
   return (
     <div className="matches-section-container">
+      {/* Loading State */}
+      {isLoading && (
+        <div style={{
+          padding: '40px',
+          textAlign: 'center',
+          color: 'var(--text-muted)',
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚙️</div>
+          <p>Cargando datos de la API...</p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div style={{
+          padding: '20px',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderLeft: '4px solid rgb(239, 68, 68)',
+          borderRadius: '4px',
+          marginBottom: '24px',
+          color: 'rgb(239, 68, 68)',
+        }}>
+          <strong>❌ Error al cargar:</strong> {error}
+        </div>
+      )}
+
+      {!isLoading && !error && (
+        <>
       {/* Stats Counter Panel */}
       <div className="stats-dashboard">
         <div className="stat-box">
@@ -77,7 +108,7 @@ export const MatchList: React.FC = () => {
 
         {/* Stage Filter Pills */}
         <div className="stage-pills">
-          {stages.map(stage => (
+          {STAGES.map(stage => (
             <button
               key={stage.value}
               className={`stage-pill-btn ${selectedStage === stage.value ? 'active-pill' : ''}`}
@@ -125,6 +156,8 @@ export const MatchList: React.FC = () => {
           <h3>No se encontraron partidos</h3>
           <p>Intenta cambiar los filtros o el texto de búsqueda.</p>
         </div>
+      )}
+        </>
       )}
     </div>
   );

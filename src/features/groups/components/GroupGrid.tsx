@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react';
-import { useFixture } from '../../../context/FixtureContext';
+import { useFixture } from '../../../context/useFixture';
 import { GroupTable } from './GroupTable';
 import { Card } from '../../../components/Card';
-import { getFlagUrl } from '../../../utils/helpers';
+import { getFlagUrl, compareTeamsStandings } from '../../../utils/helpers';
 import type { Team } from '../../../types';
 
 // Definimos la extensión de tipos correcta para los terceros lugares
@@ -17,7 +17,7 @@ interface ThirdPlacedTeam extends Team {
 }
 
 export const GroupGrid: React.FC = () => {
-  const { groups } = useFixture();
+  const { groups, isLoading, error } = useFixture();
 
   // Envolvemos el cálculo pesado en un useMemo con tipado estricto
   const thirdPlacedStandings = useMemo<ThirdPlacedTeam[]>(()=> {
@@ -30,19 +30,40 @@ export const GroupGrid: React.FC = () => {
         } as ThirdPlacedTeam);
       }
     });
-    // Criterios de desempate oficiales de la FIFA unificados
-    return thirds.sort((a,b)=>{
-      if (b.points !== a.points) return b.points - a.points;
-      if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
-      if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
-      return a.name.localeCompare(b.name);
-    });
+    // Use reusable comparator function for FIFA standings
+    return thirds.sort(compareTeamsStandings);
   },[groups]);
-
-  //const thirdPlacedStandings = getAllThirdPlacedTeams();
 
   return (
     <div className="groups-container">
+      {/* Loading State */}
+      {isLoading && (
+        <div style={{
+          padding: '40px',
+          textAlign: 'center',
+          color: 'var(--text-muted)',
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚙️</div>
+          <p>Cargando datos de los grupos...</p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div style={{
+          padding: '20px',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderLeft: '4px solid rgb(239, 68, 68)',
+          borderRadius: '4px',
+          marginBottom: '24px',
+          color: 'rgb(239, 68, 68)',
+        }}>
+          <strong>❌ Error al cargar:</strong> {error}
+        </div>
+      )}
+
+      {!isLoading && !error && (
+        <>
       {/* Grid of Groups */}
       <div className="groups-grid">
         {groups.map(group => (
@@ -99,6 +120,8 @@ export const GroupGrid: React.FC = () => {
           </table>
         </div>
       </Card>
+        </>
+      )}
     </div>
   );
 };

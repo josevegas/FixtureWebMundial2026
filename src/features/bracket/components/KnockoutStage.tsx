@@ -1,38 +1,53 @@
 import React, { useMemo } from 'react';
-import { useFixture } from '../../../context/FixtureContext';
+import { useFixture } from '../../../context/useFixture';
+import { getStageLabelEs } from '../../../utils/helpers';
 import { MatchCard } from '../../matches/components/MatchCard';
-import type { Stage, Match } from '../../../types';
+import type { Match } from '../../../types';
 
 export const KnockoutStage: React.FC = () => {
-  const { matches } = useFixture();
+  const { matches, isLoading, error } = useFixture();
 
   // 1. Agrupar eficientemente los partidos de eliminación directa usando useMemo
   const rounds = useMemo(() => {
-    const knockoutStages: Stage[] = ['ROUND_OF_32', 'ROUND_OF_16', 'QUARTERS', 'SEMI', 'FINAL'];
+    const knockoutStages = ['round_32', 'round_16', 'quarter', 'semi', 'final'] as const;
     
-    return knockoutStages.map(stage => {
-      const stageMatches = matches.filter(m => m.stage === stage);
-      
-      // Mapeo de nombres legibles para la interfaz
-      let title = '';
-      switch (stage) {
-        case 'ROUND_OF_32': title = 'Dieciseisavos (Fase de 32)'; break;
-        case 'ROUND_OF_16': title = 'Octavos de Final'; break;
-        case 'QUARTERS': title = 'Cuartos de Final'; break;
-        case 'SEMI': title = 'Semifinales'; break;
-        case 'FINAL': title = 'Gran Final'; break;
-      }
-
-      return {
-        stage,
-        title,
-        matches: stageMatches
-      };
-    });
+    return knockoutStages.map(stage => ({
+      stage,
+      title: getStageLabelEs(stage),
+      matches: matches.filter(m => m.stage === stage)
+    }));
   }, [matches]);
 
   return (
     <div className="p-6 max-w-[100vw] overflow-x-auto select-none">
+      {/* Loading State */}
+      {isLoading && (
+        <div style={{
+          padding: '40px',
+          textAlign: 'center',
+          color: 'var(--text-muted)',
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚙️</div>
+          <p>Cargando datos de las eliminatorias...</p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div style={{
+          padding: '20px',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderLeft: '4px solid rgb(239, 68, 68)',
+          borderRadius: '4px',
+          marginBottom: '24px',
+          color: 'rgb(239, 68, 68)',
+        }}>
+          <strong>❌ Error al cargar:</strong> {error}
+        </div>
+      )}
+
+      {!isLoading && !error && (
+        <>
       <header className="mb-8 text-center">
         <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           Fase de Eliminación Directa
@@ -80,6 +95,8 @@ export const KnockoutStage: React.FC = () => {
           </div>
         ))}
       </div>
+        </>
+      )}
     </div>
   );
 };

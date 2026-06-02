@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FixtureProvider, useFixture } from './context/FixtureContext';
+import { FixtureProvider } from './context/FixtureContext';
 import { MatchList } from './features/matches/components/MatchList';
 import { GroupGrid } from './features/groups/components/GroupGrid';
 import { KnockoutStage } from './features/bracket/components/KnockoutStage';
@@ -10,14 +10,9 @@ type TabType = 'matches' | 'groups' | 'bracket';
 function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('matches');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const { simulateAllGroupStage, simulateAllTournament, resetFixture } = useFixture();
-
+  
   useEffect(() => {
-    if (theme === 'light') {
-      document.body.classList.add('light-mode');
-    } else {
-      document.body.classList.remove('light-mode');
-    }
+    document.body.classList.toggle('light-mode', theme === 'light');
   }, [theme]);
 
   const toggleTheme = () => {
@@ -32,22 +27,13 @@ function Dashboard() {
           <span className="header-badge">Copa Mundial FIFA 2026</span>
           <h1 className="app-title">Fixture Mundial 2026</h1>
           <p className="app-subtitle">
-            Simulador de partidos, posiciones de grupos y eliminatorias de Estados Unidos, Canadá y México
+            Partidos, posiciones de grupos y eliminatorias de Estados Unidos, Canadá y México
           </p>
         </div>
 
         {/* Simulation Actions */}
         <div className="simulator-actions-panel">
-          <Button variant="secondary" onClick={simulateAllGroupStage}>
-            ⚡ Simular Grupos
-          </Button>
-          <Button variant="primary" onClick={simulateAllTournament}>
-            🏆 Simular Torneo
-          </Button>
-          <Button variant="danger" onClick={resetFixture}>
-            🔄 Reiniciar
-          </Button>
-          <Button variant="secondary" onClick={toggleTheme}>
+                    <Button variant="secondary" onClick={toggleTheme}>
             {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
           </Button>
         </div>
@@ -91,7 +77,7 @@ function Dashboard() {
         fontSize: '0.8rem',
         color: 'var(--text-muted)'
       }}>
-        <p>Fixture Web Oficial Copa Mundial 2026 &copy; {new Date().getFullYear()}</p>
+        <p>Fixture Web de la Copa Mundial 2026 &copy; José Luis Vegas Márquez, {new Date().getFullYear()}</p>
         <p style={{ marginTop: '4px', fontSize: '0.75rem' }}>
           Sedes oficiales: Atlanta, Boston, Ciudad de México, Dallas, Guadalajara, Houston, Kansas City, Los Ángeles, Miami, Monterrey, Nueva York, Filadelfia, San Francisco, Seattle, Toronto, Vancouver.
         </p>

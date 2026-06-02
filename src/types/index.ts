@@ -26,18 +26,20 @@ export interface Match {
   id: string;
   stage: StageType;
   group: string | null; // e.g., 'A' for group stage, null for knockout
-  homeTeam: Team | null; // null if not yet determined in knockout stage
-  awayTeam: Team | null; // null if not yet determined in knockout stage
-  homeTeamPlaceholder: string | null; // e.g., "Winner Group A", "1A"
-  awayTeamPlaceholder: string | null; // e.g., "Runner-up Group B", "2B"
+  homeTeamId: string;
+  awayTeamId: string;
+  homeTeam?: Team | null;
+  awayTeam?: Team | null;
+  homeTeamPlaceholder: string;
+  awayTeamPlaceholder: string;
   homeScore: number | null;
   awayScore: number | null;
-  homePenaltyScore?: number | null;
-  awayPenaltyScore?: number | null;
+  homePenaltyScore: number | null;
+  awayPenaltyScore: number | null;
   date: string;
-  stadium: string;
+  stadiumId: string;
   isCompleted: boolean;
-  winnerId: string | null; // Needed for knockout draw resolution (penalties)
+  winnerId: string | null;
 }
 
 export interface Group {

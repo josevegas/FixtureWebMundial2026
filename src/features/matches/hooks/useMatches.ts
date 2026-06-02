@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import { useFixture } from '../../../context/FixtureContext';
+import { useFixture } from '../../../context/useFixture';
+import { getTeamName } from '../../../utils/helpers';
 import type { StageType } from '../../../types';
 
 export const useMatches = () => {
-  const { matches } = useFixture();
+  const { matches, isLoading, error } = useFixture();
   const [selectedStage, setSelectedStage] = useState<StageType | 'all'>('all');
   const [selectedGroup, setSelectedGroup] = useState<string | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -22,11 +23,11 @@ export const useMatches = () => {
         }
       }
 
-      // Search filter (team name)
+      // Search filter (team ID or placeholder)
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
-        const homeName = match.homeTeam?.name.toLowerCase() || match.homeTeamPlaceholder?.toLowerCase() || '';
-        const awayName = match.awayTeam?.name.toLowerCase() || match.awayTeamPlaceholder?.toLowerCase() || '';
+        const homeName = getTeamName(match.homeTeam, match.homeTeamPlaceholder).toLowerCase();
+        const awayName = getTeamName(match.awayTeam, match.awayTeamPlaceholder).toLowerCase();
         if (!homeName.includes(query) && !awayName.includes(query)) {
           return false;
         }
@@ -64,5 +65,7 @@ export const useMatches = () => {
     searchQuery,
     setSearchQuery,
     stats,
+    isLoading,
+    error,
   };
 };
