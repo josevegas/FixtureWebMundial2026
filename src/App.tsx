@@ -10,7 +10,7 @@ type TabType = 'matches' | 'groups' | 'bracket';
 function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('matches');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  
+
   useEffect(() => {
     // Modern Web Guidance: use native color-scheme property which controls the light-dark() CSS function
     document.documentElement.style.colorScheme = theme;
@@ -43,13 +43,6 @@ function Dashboard() {
             Partidos, posiciones de grupos y eliminatorias de Estados Unidos, Canadá y México
           </p>
         </div>
-
-        {/* Simulation Actions */}
-        <div className="simulator-actions-panel">
-          <Button variant="secondary" onClick={toggleTheme}>
-            {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
-          </Button>
-        </div>
       </header>
 
       {/* Navigation Tab Bar */}
@@ -72,6 +65,9 @@ function Dashboard() {
         >
           🌳 Fase Eliminatoria
         </button>
+        <Button variant="secondary" onClick={toggleTheme}>
+          {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
+        </Button>
       </nav>
 
       {/* Feature Views */}
