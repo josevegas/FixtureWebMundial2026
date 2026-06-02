@@ -12,11 +12,24 @@ function Dashboard() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   
   useEffect(() => {
-    document.body.classList.toggle('light-mode', theme === 'light');
+    // Modern Web Guidance: use native color-scheme property which controls the light-dark() CSS function
+    document.documentElement.style.colorScheme = theme;
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  const handleTabChange = (newTab: TabType) => {
+    if (newTab === activeTab) return;
+    // Modern Web Guidance: Use View Transitions API for smooth morphing/crossfading between tabs
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        setActiveTab(newTab);
+      });
+    } else {
+      setActiveTab(newTab);
+    }
   };
 
   return (
@@ -33,7 +46,7 @@ function Dashboard() {
 
         {/* Simulation Actions */}
         <div className="simulator-actions-panel">
-                    <Button variant="secondary" onClick={toggleTheme}>
+          <Button variant="secondary" onClick={toggleTheme}>
             {theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
           </Button>
         </div>
@@ -43,19 +56,19 @@ function Dashboard() {
       <nav className="navbar-tabs">
         <button
           className={`nav-tab-btn ${activeTab === 'matches' ? 'active-tab' : ''}`}
-          onClick={() => setActiveTab('matches')}
+          onClick={() => handleTabChange('matches')}
         >
           ⚽ Partidos & Resultados
         </button>
         <button
           className={`nav-tab-btn ${activeTab === 'groups' ? 'active-tab' : ''}`}
-          onClick={() => setActiveTab('groups')}
+          onClick={() => handleTabChange('groups')}
         >
           📋 Tablas de Grupos
         </button>
         <button
           className={`nav-tab-btn ${activeTab === 'bracket' ? 'active-tab' : ''}`}
-          onClick={() => setActiveTab('bracket')}
+          onClick={() => handleTabChange('bracket')}
         >
           🌳 Fase Eliminatoria
         </button>

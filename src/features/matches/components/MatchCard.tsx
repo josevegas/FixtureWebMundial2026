@@ -60,7 +60,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             min="0"
             className="score-input"
             placeholder="-"
-            disabled={!teamsReady}
+            disabled={match.isCompleted || !teamsReady}
             value={match.homeScore != null ? match.homeScore : ''}
             onChange={handleHomeScoreChange}
           />
@@ -74,7 +74,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             min="0"
             className="score-input"
             placeholder="-"
-            disabled={!teamsReady}
+            disabled={match.isCompleted || !teamsReady}
             value={match.awayScore != null ? match.awayScore : ''}
             onChange={handleAwayScoreChange}
           />
