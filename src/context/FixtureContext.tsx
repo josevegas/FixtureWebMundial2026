@@ -47,9 +47,9 @@ export const FixtureProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
       try {
         const [teamsRes, matchesRes, stadiumsRes] = await Promise.all([
-          fetch('https://apimundialfutbol2026.onrender.com/teams/'),
-          fetch('https://apimundialfutbol2026.onrender.com/matches/'),
-          fetch('https://apimundialfutbol2026.onrender.com/stadiums/')
+          fetch(`${import.meta.env.VITE_API_URL}/teams/`),
+          fetch(`${import.meta.env.VITE_API_URL}/matches/`),
+          fetch(`${import.meta.env.VITE_API_URL}/stadiums/`)
         ]);
         if (!teamsRes.ok || !matchesRes.ok || !stadiumsRes.ok) {
           throw new Error('Error al cargar datos');
