@@ -12,8 +12,11 @@ function Dashboard() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
-    // Modern Web Guidance: use native color-scheme property which controls the light-dark() CSS function
-    document.documentElement.style.colorScheme = theme;
+    if (theme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
   }, [theme]);
 
   const toggleTheme = () => {

@@ -5,7 +5,6 @@
    ========================================================================== */
 
 :root {
-  color-scheme: light dark;
   --font-headers: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
 
@@ -17,51 +16,65 @@
   --brand-gold: #ffd700;
   --brand-gold-dark: #ca8a04;
 
-  /* Gradientes de Marca Invariables */
+  /* Gradientes de Marca */
   --grad-host-nations: linear-gradient(135deg, var(--brand-purple) 0%, #ff007f 50%, #00f2fe 100%);
   --grad-gold: linear-gradient(135deg, #fef08a 0%, var(--brand-gold) 50%, var(--brand-gold-dark) 100%);
+  --grad-active-tab: linear-gradient(90deg, var(--brand-purple) 0%, #ff007f 100%);
+  --grad-card: linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%);
 
-  /* Premium Responsive Color Palette via light-dark() */
-  --bg-main: light-dark(#f5f3ff, #0a061b);
-  --bg-card: light-dark(rgba(255, 255, 255, 0.85), rgba(22, 17, 43, 0.65));
-  --bg-card-hover: light-dark(rgba(255, 255, 255, 0.98), rgba(30, 24, 59, 0.85));
-  --bg-control: light-dark(#ffffff, rgba(15, 23, 42, 0.8));
-  --bg-panel: light-dark(rgba(255, 255, 255, 0.9), rgba(16, 20, 38, 0.4));
-  
-  /* Estados e Interacciones */
-  --border-glass: light-dark(rgba(94, 23, 235, 0.1), rgba(255, 255, 255, 0.07));
-  --border-glass-focus: light-dark(rgba(255, 0, 127, 0.4), rgba(94, 23, 235, 0.5));
-  --grad-card: light-dark(
-    linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 246, 252, 0.9) 100%),
-    linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%)
-  );
-  --grad-active-tab: light-dark(
-    linear-gradient(90deg, #5e17eb 0%, #ff007f 100%),
-    linear-gradient(90deg, var(--brand-purple) 0%, #ff007f 100%)
-  );
+  /* Premium Dark Color Palette (Official FIFA WC 2026 inspired) */
+  --bg-main: #0a061b;
+  --bg-card: rgba(22, 17, 43, 0.65);
+  --bg-card-hover: rgba(30, 24, 59, 0.85);
+  --bg-control: rgba(15, 23, 42, 0.8);
+  --bg-panel: rgba(16, 20, 38, 0.4);
+  /* Estados e Interacciones en Oscuro */
+  --border-glass: rgba(255, 255, 255, 0.07);
+  --border-glass-focus: rgba(94, 23, 235, 0.5);
+  --grad-card: linear-gradient(145deg, rgba(22, 17, 43, 0.7) 0%, rgba(13, 10, 28, 0.8) 100%);
 
-  /* Colors */
+  /* Colors & Brand Gradients */
   --color-primary: #5e17eb;
   --color-accent-us: #2563eb;
   --color-accent-ca: #dc2626;
   --color-accent-mx: #0d9488;
   --color-gold: #ffd700;
   --color-gold-hover: #ca8a04;
-  
-  /* Textos */
-  --text-primary: light-dark(#0a061b, #f8fafc);
-  --text-secondary: light-dark(#4a4368, #cbd5e1);
-  --text-muted: light-dark(#7c759c, #94a3b8);
-  
-  /* Efecto de Luces de Estadio traseras */
-  --glow-1: light-dark(rgba(255, 0, 127, 0.04), rgba(255, 0, 127, 0.12));
-  --glow-2: light-dark(rgba(0, 242, 254, 0.04), rgba(0, 242, 254, 0.1));
-  --glow-3: light-dark(rgba(94, 23, 235, 0.05), rgba(94, 23, 235, 0.08));
-  --glow-4: light-dark(rgba(0, 255, 163, 0.02), rgba(0, 255, 163, 0.04));
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
-  /* Standard Scrollbar Configuration */
-  scrollbar-color: light-dark(rgba(94, 23, 235, 0.3) rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2) #090a10);
-  scrollbar-width: thin;
+  /* Efecto de Luces de Estadio traseras */
+  --glow-1: rgba(255, 0, 127, 0.12);
+  --glow-2: rgba(0, 242, 254, 0.1);
+  --glow-3: rgba(94, 23, 235, 0.08);
+  --glow-4: rgba(0, 255, 163, 0.04);
+
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+  --bg-main: #f5f3ff; /* Soft pastel violet-grey base */
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-control: #ffffff;
+  --bg-panel: rgba(255, 255, 255, 0.9);
+  /* Estados e Interacciones en Claro */
+  --border-glass: rgba(94, 23, 235, 0.1);
+  --border-glass-focus: rgba(255, 0, 127, 0.4);
+  --grad-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 246, 252, 0.9) 100%);
+  --grad-active-tab: linear-gradient(90deg, #5e17eb 0%, #ff007f 100%);
+  /* Textos en Claro */
+  --text-primary: #0a061b;
+  --text-secondary: #4a4368;
+  --text-muted: #7c759c;
+  
+  /* Destellos sutiles para el fondo claro */
+  --glow-1: rgba(255, 0, 127, 0.04);
+  --glow-2: rgba(0, 242, 254, 0.04);
+  --glow-3: rgba(94, 23, 235, 0.05);
+  --glow-4: rgba(0, 255, 163, 0.02);
+
 }
 
 * {
@@ -88,7 +101,24 @@ body {
   background-attachment: fixed;
 }
 
-/* Scrollbars removed in favor of CSS scrollbar-color property */
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090a10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
 
 /* UI Typography & Layout */
 h1, h2, h3, h4, h5, h6 {
@@ -101,10 +131,6 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 1400px;
   margin: 0 auto;
   padding: 24px 16px;
-}
-
-.app-main-content {
-  container-type: inline-size;
 }
 
 /* Header & Navbar */
@@ -753,13 +779,13 @@ h1, h2, h3, h4, h5, h6 {
   gap: 24px;
 }
 
-@container (max-width: 1400px) {
+@media (max-width: 1400px) {
   .groups-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@container (max-width: 900px) {
+@media (max-width: 900px) {
   .groups-grid {
     grid-template-columns: 1fr;
   }
@@ -1447,4 +1473,3 @@ body.light-mode .ui-btn-secondary:not(:disabled):hover {
   margin-right: 6px;
   vertical-align: middle;
 }
-
